@@ -66,7 +66,7 @@ function pred_objavo_uninstall() {
 }
 register_uninstall_hook( __FILE__, 'pred_objavo_uninstall' );
 
-// Preusmeri stran posameznega prispevka in arhivov za ne-administratorje
+// Preusmeri stran posameznega prispevka in arhivov za ne-administratorje in Home novic
 function pred_objavo_redirect_single_post_and_archives() {
     if ( ! current_user_can( 'administrator' ) ) {
         
@@ -79,15 +79,11 @@ function pred_objavo_redirect_single_post_and_archives() {
             wp_redirect( home_url() );
             exit;
         }
+
+        if ( is_page( array( 47 ) ) ) {
+            wp_redirect( home_url() );
+            exit;
+        }
     }
 }
 add_action( 'template_redirect', 'pred_objavo_redirect_single_post_and_archives' );
-
-// Skrij strani z ID-ji 47
-function pred_objavo_hide_pages() {
-    if ( is_page( array( 47 ) ) && ! current_user_can( 'administrator' ) ) {
-        wp_redirect( home_url() );
-        exit;
-    }
-}
-add_action( 'template_redirect', 'pred_objavo_hide_pages' );
