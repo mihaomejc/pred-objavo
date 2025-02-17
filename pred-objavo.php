@@ -2,7 +2,7 @@
 /*
 Plugin Name: Pred Objavo
 Description: Ustvari začasen CPT za prispevke "Pred objavo" in skrije navadne prispevke ter določene strani, razen za administratorja.
-Version: 1.1
+Version: 1.1.1
 Author: Miha Omejc
 */
 
