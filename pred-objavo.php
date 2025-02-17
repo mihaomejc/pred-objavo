@@ -66,15 +66,22 @@ function pred_objavo_uninstall() {
 }
 register_uninstall_hook( __FILE__, 'pred_objavo_uninstall' );
 
-// Skrij navadne prispevke (Posts) za vse razen za admina
-function pred_objavo_hide_posts( $query ) {
-    if ( ! is_admin() && $query->is_main_query() && $query->is_home() ) {
-        if ( ! current_user_can( 'administrator' ) ) {
-            $query->set( 'post_type', array( 'pred_objavo' ) );
+// Preusmeri stran posameznega prispevka in arhivov za ne-administratorje
+function pred_objavo_redirect_single_post_and_archives() {
+    if ( ! current_user_can( 'administrator' ) ) {
+        
+        if ( is_singular( 'post' ) ) {
+            wp_redirect( home_url() );
+            exit;
+        }
+
+        if ( is_post_type_archive( 'post' ) || is_category() || is_tag() || is_author() ) {
+            wp_redirect( home_url() );
+            exit;
         }
     }
 }
-add_action( 'pre_get_posts', 'pred_objavo_hide_posts' );
+add_action( 'template_redirect', 'pred_objavo_redirect_single_post_and_archives' );
 
 // Skrij strani z ID-ji 47
 function pred_objavo_hide_pages() {
